@@ -21,7 +21,6 @@ fn star_1(input: &str) -> i32 {
                 break;
             }
         }
-        println!("{}", result);
         total += result.parse::<i32>().unwrap();
     }
     total

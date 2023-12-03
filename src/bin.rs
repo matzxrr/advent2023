@@ -1,4 +1,7 @@
+use core::panic;
+
 use clap::{Arg, ArgAction, ArgGroup, Command};
+use solutions::day_1_trebuchet;
 
 fn cli() -> Command {
     Command::new("advent23")
@@ -39,7 +42,14 @@ fn get_day_answers(day: &str) {
 }
 
 fn get_star_answer(star: &str) {
-    println!("Getting answer for star '{}'", star);
+    print!("Answer for star '{}' => ", star);
+    match star {
+        "1" => {
+            let answer = day_1_trebuchet::exec_star_1();
+            println!("{}", answer);
+        }
+        _ => panic!("Unknown star"),
+    }
 }
 
 fn main() {
