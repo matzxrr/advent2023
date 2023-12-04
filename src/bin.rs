@@ -29,13 +29,23 @@ fn cli() -> Command {
 }
 
 fn get_day_answers(day: &str) {
-    println!("Getting answer for day '{}'", day);
+    match day {
+        "1" => {
+            get_star_answer("1");
+            get_star_answer("2");
+        }
+        _ => eprintln!("Unknown day '{}'", day),
+    }
 }
 
 fn get_star_answer(star: &str) {
     match star {
         "1" => {
             let answer = day_1_trebuchet::exec_star_1();
+            println!("Answer for star '{}' => {}", star, answer);
+        }
+        "2" => {
+            let answer = day_1_trebuchet::exec_star_2();
             println!("Answer for star '{}' => {}", star, answer);
         }
         _ => eprintln!("Unknown star '{}'", star),

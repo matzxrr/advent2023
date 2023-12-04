@@ -62,7 +62,6 @@ fn star_2(input: &str) -> i32 {
                 }
             }
         }
-        println!("{:?}", numbers_as_char_in_string);
         let mut s = String::from(numbers_as_char_in_string[0]);
         s.push(numbers_as_char_in_string[numbers_as_char_in_string.len() - 1]);
         total += s.parse::<i32>().unwrap();
