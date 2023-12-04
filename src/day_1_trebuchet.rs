@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-const INPUT_TO_PARSE: &str = include_str!("assets/star_1_input.txt");
+const INPUT_TO_PARSE: &str = include_str!("assets/day_1_input_1.txt");
 
 pub fn exec_star_1() -> i32 {
     star_1(INPUT_TO_PARSE)
@@ -75,14 +75,14 @@ mod day_1_test {
 
     #[test]
     fn test_star_1() {
-        let input = include_str!("assets/star_1_test.txt");
+        let input = include_str!("assets/day_1_test_input_1.txt");
         let result = star_1(input);
         assert_eq!(result, 142);
     }
 
     #[test]
     fn test_star_2() {
-        let input = include_str!("assets/star_2_test.txt");
+        let input = include_str!("assets/day_1_test_input_2.txt");
         let result = star_2(input);
         assert_eq!(result, 281);
     }
