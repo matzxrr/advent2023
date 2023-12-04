@@ -1,5 +1,5 @@
 use clap::{Arg, ArgAction, ArgGroup, Command};
-use solutions::day_1_trebuchet;
+use solutions::{day_1_trebuchet, day_2_cube_conundrum};
 
 fn cli() -> Command {
     Command::new("advent23")
@@ -34,6 +34,9 @@ fn get_day_answers(day: &str) {
             get_star_answer("1");
             get_star_answer("2");
         }
+        "2" => {
+            get_star_answer("3");
+        }
         _ => eprintln!("Unknown day '{}'", day),
     }
 }
@@ -46,6 +49,10 @@ fn get_star_answer(star: &str) {
         }
         "2" => {
             let answer = day_1_trebuchet::exec_star_2();
+            println!("Answer for star '{}' => {}", star, answer);
+        }
+        "3" => {
+            let answer = day_2_cube_conundrum::exec_star_3();
             println!("Answer for star '{}' => {}", star, answer);
         }
         _ => eprintln!("Unknown star '{}'", star),
