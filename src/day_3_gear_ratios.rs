@@ -23,9 +23,6 @@ fn star_5(input: &str) -> i32 {
                     number.push(chars[j]);
                 }
 
-                // Number we found
-                dbg!(&number);
-
                 // Data about the number
                 let number_len = number.len();
                 let range = number_len + 2; // left and right
