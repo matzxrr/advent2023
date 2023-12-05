@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::{cmp, collections::HashMap};
 
 const INPUT_TO_PARSE: &str = include_str!("assets/day_2_input_1.txt");
 
@@ -31,12 +31,39 @@ fn star_3(input: &str) -> i32 {
     total
 }
 
-pub fn exec_star_2() -> i32 {
+pub fn exec_star_4() -> i32 {
     star_4(INPUT_TO_PARSE)
 }
 
-fn star_4(_input: &str) -> i32 {
-    0
+fn star_4(input: &str) -> i32 {
+    let mut power = 0;
+    let cube_colors = vec!["red", "green", "blue"];
+    for line in input.lines() {
+        let mut cubes: HashMap<&str, i32> = HashMap::new();
+        let (_game_string, game_data) = line.rsplit_once(':').unwrap();
+        // let game_id = game_string.rsplit_once(' ').unwrap().1;
+        let turns = game_data.trim().split(';');
+        for turn in turns {
+            let cube_groups: Vec<_> = turn.trim().split(',').collect();
+            for cube_group in cube_groups {
+                let cube_group_parts: Vec<_> = cube_group.trim().split(' ').collect();
+                let cube_count = cube_group_parts[0].parse::<i32>().unwrap();
+                let cube_color = cube_group_parts[1];
+                cubes
+                    .entry(cube_color)
+                    .and_modify(|max| *max = cmp::max(*max, cube_count))
+                    .or_insert(cube_count);
+            }
+        }
+        let product = cube_colors.iter().fold(1, |mut acc, color| {
+            if let Some(count) = cubes.get(color) {
+                acc *= count;
+            }
+            acc
+        });
+        power += product;
+    }
+    power
 }
 
 #[cfg(test)]

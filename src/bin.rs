@@ -36,6 +36,7 @@ fn get_day_answers(day: &str) {
         }
         "2" => {
             get_star_answer("3");
+            get_star_answer("4");
         }
         _ => eprintln!("Unknown day '{}'", day),
     }
@@ -53,6 +54,10 @@ fn get_star_answer(star: &str) {
         }
         "3" => {
             let answer = day_2_cube_conundrum::exec_star_3();
+            println!("Answer for star '{}' => {}", star, answer);
+        }
+        "4" => {
+            let answer = day_2_cube_conundrum::exec_star_4();
             println!("Answer for star '{}' => {}", star, answer);
         }
         _ => eprintln!("Unknown star '{}'", star),
