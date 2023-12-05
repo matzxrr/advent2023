@@ -40,7 +40,7 @@ fn get_day_answers(day: &str) {
         }
         "3" => {
             get_star_answer("5");
-            // get_star_answer("4");
+            get_star_answer("6");
         }
         _ => eprintln!("Unknown day '{}'", day),
     }
@@ -66,6 +66,10 @@ fn get_star_answer(star: &str) {
         }
         "5" => {
             let answer = day_3_gear_ratios::exec_star_5();
+            println!("Answer for star '{}' => {}", star, answer);
+        }
+        "6" => {
+            let answer = day_3_gear_ratios::exec_star_6();
             println!("Answer for star '{}' => {}", star, answer);
         }
         _ => eprintln!("Unknown star '{}'", star),
