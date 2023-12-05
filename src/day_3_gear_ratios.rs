@@ -217,7 +217,6 @@ fn star_6(input: &str) -> i32 {
             j += 1;
         }
     }
-    dbg!(&gear_map);
     gear_map.values().fold(0, |mut acc_1, value| {
         let v = value.values();
         let product = if v.len() == 2 {
