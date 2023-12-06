@@ -1,5 +1,8 @@
 use clap::{Arg, ArgAction, ArgGroup, Command};
-use solutions::{day_1_trebuchet, day_2_cube_conundrum, day_3_gear_ratios, day_4_scratchcards};
+use solutions::{
+    day_1_trebuchet, day_2_cube_conundrum, day_3_gear_ratios, day_4_scratchcards,
+    day_5_if_you_give_a_seed_a_fertilizer,
+};
 
 fn cli() -> Command {
     Command::new("advent23")
@@ -47,6 +50,7 @@ fn get_star_answer(star: &str) {
         "6" => day_3_gear_ratios::exec_star_6(),
         "7" => day_4_scratchcards::exec_star_7(),
         "8" => day_4_scratchcards::exec_star_8(),
+        "9" => day_5_if_you_give_a_seed_a_fertilizer::exec_star_9(),
         _ => {
             eprintln!("Unknown star '{}'", star);
             return;
