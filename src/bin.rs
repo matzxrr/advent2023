@@ -46,6 +46,7 @@ fn get_star_answer(star: &str) {
         "5" => day_3_gear_ratios::exec_star_5(),
         "6" => day_3_gear_ratios::exec_star_6(),
         "7" => day_4_scratchcards::exec_star_7(),
+        "8" => day_4_scratchcards::exec_star_8(),
         _ => {
             eprintln!("Unknown star '{}'", star);
             return;
