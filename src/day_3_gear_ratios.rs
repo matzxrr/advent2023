@@ -131,11 +131,6 @@ fn star_6(input: &str) -> i32 {
                             let word_index = j_start + (i * chars.len());
                             gear_index -= chars.len();
 
-                            println!(
-                                "found number {} attached to gear at index {}",
-                                number, gear_index
-                            );
-
                             gear_map
                                 .entry(gear_index)
                                 .and_modify(|h| {
@@ -156,10 +151,6 @@ fn star_6(input: &str) -> i32 {
                 if chars[left] == '*' {
                     let gear_index = left + (i * chars.len());
                     let word_index = j_start + (i * chars.len());
-                    println!(
-                        "found number {} attached to gear at index {}",
-                        number, gear_index
-                    );
 
                     gear_map
                         .entry(gear_index)
@@ -171,10 +162,6 @@ fn star_6(input: &str) -> i32 {
                 if chars[right] == '*' {
                     let gear_index = right + (i * chars.len());
                     let word_index = j_start + (i * chars.len());
-                    println!(
-                        "found number {} attached to gear at index {}",
-                        number, gear_index
-                    );
 
                     gear_map
                         .entry(gear_index)
@@ -198,11 +185,6 @@ fn star_6(input: &str) -> i32 {
                             let mut gear_index = a.0 + (i * chars.len());
                             let word_index = j_start + (i * chars.len());
                             gear_index += chars.len();
-
-                            println!(
-                                "found number {} attached to gear at index {}",
-                                number, gear_index
-                            );
 
                             gear_map
                                 .entry(gear_index)

@@ -29,51 +29,28 @@ fn cli() -> Command {
 }
 
 fn get_day_answers(day: &str) {
-    match day {
-        "1" => {
-            get_star_answer("1");
-            get_star_answer("2");
-        }
-        "2" => {
-            get_star_answer("3");
-            get_star_answer("4");
-        }
-        "3" => {
-            get_star_answer("5");
-            get_star_answer("6");
-        }
-        _ => eprintln!("Unknown day '{}'", day),
-    }
+    let day_as_int = day.parse::<i32>().unwrap();
+    let second = day_as_int * 2;
+    let first = second - 1;
+
+    get_star_answer(&first.to_string());
+    get_star_answer(&second.to_string());
 }
 
 fn get_star_answer(star: &str) {
-    match star {
-        "1" => {
-            let answer = day_1_trebuchet::exec_star_1();
-            println!("Answer for star '{}' => {}", star, answer);
+    let answer = match star {
+        "1" => day_1_trebuchet::exec_star_1(),
+        "2" => day_1_trebuchet::exec_star_2(),
+        "3" => day_2_cube_conundrum::exec_star_3(),
+        "4" => day_2_cube_conundrum::exec_star_4(),
+        "5" => day_3_gear_ratios::exec_star_5(),
+        "6" => day_3_gear_ratios::exec_star_6(),
+        _ => {
+            eprintln!("Unknown star '{}'", star);
+            return;
         }
-        "2" => {
-            let answer = day_1_trebuchet::exec_star_2();
-            println!("Answer for star '{}' => {}", star, answer);
-        }
-        "3" => {
-            let answer = day_2_cube_conundrum::exec_star_3();
-            println!("Answer for star '{}' => {}", star, answer);
-        }
-        "4" => {
-            let answer = day_2_cube_conundrum::exec_star_4();
-            println!("Answer for star '{}' => {}", star, answer);
-        }
-        "5" => {
-            let answer = day_3_gear_ratios::exec_star_5();
-            println!("Answer for star '{}' => {}", star, answer);
-        }
-        "6" => {
-            let answer = day_3_gear_ratios::exec_star_6();
-            println!("Answer for star '{}' => {}", star, answer);
-        }
-        _ => eprintln!("Unknown star '{}'", star),
-    }
+    };
+    println!("Answer for star '{}' => {}", star, answer);
 }
 
 fn main() {
