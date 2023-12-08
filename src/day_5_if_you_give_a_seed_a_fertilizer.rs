@@ -1,3 +1,8 @@
+use std::{
+    sync::{Arc, Mutex},
+    thread,
+};
+
 const INPUT: &str = include_str!("assets/day_5_input_1.txt");
 
 pub fn exec_star_9() -> i32 {
@@ -8,7 +13,7 @@ trait Header {
     const HEADER: &'static str;
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 struct Mapping {
     destination_start: u64,
     source_start: u64,
@@ -25,7 +30,7 @@ impl Mapping {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 struct Almanac {
     seeds: Vec<u64>,
     seed_to_soil: Vec<Mapping>,
@@ -148,6 +153,67 @@ fn star_9(input: &str) -> i32 {
     closets_seed.1 as i32
 }
 
+pub fn exec_star_10() -> i32 {
+    star_10(INPUT)
+}
+
+fn star_10(input: &str) -> i32 {
+    let lines = input.lines();
+    let groups = lines.fold(vec![vec![]], |mut acc, value| {
+        if value.is_empty() {
+            acc.push(vec![]);
+        } else {
+            let index = acc.len() - 1;
+            acc[index].push(value);
+        }
+        acc
+    });
+
+    let mut almanac = Almanac::new();
+    for group in groups.iter() {
+        almanac.parse_group(group);
+    }
+
+    let closet_seed = Arc::new(Mutex::new((u64::MAX, u64::MAX)));
+    let mut handles = vec![];
+
+    let len = almanac.seeds.len();
+    let mut index = 0;
+    while index < len {
+        let seed = almanac.seeds[index];
+        let range = almanac.seeds[index + 1];
+        let almanac_clone = almanac.clone();
+        let closet = Arc::clone(&closet_seed);
+        index += 2;
+        let handle = thread::spawn(move || {
+            let mut close = (u64::MAX, u64::MAX);
+            for start_seed in seed..=seed + range {
+                let soil = Almanac::find_next(&almanac_clone.seed_to_soil, start_seed);
+                let fert = Almanac::find_next(&almanac_clone.soil_to_fert, soil);
+                let water = Almanac::find_next(&almanac_clone.fert_to_water, fert);
+                let light = Almanac::find_next(&almanac_clone.water_to_light, water);
+                let temp = Almanac::find_next(&almanac_clone.light_to_temp, light);
+                let humid = Almanac::find_next(&almanac_clone.temp_to_humid, temp);
+                let loc = Almanac::find_next(&almanac_clone.humid_to_loc, humid);
+                if loc < close.1 {
+                    close = (start_seed, loc);
+                }
+            }
+            let mut c = closet.lock().unwrap();
+            if close.1 < c.1 {
+                *c = (close.0, close.1);
+            }
+        });
+        println!("Thread spawned : #{}", handles.len() + 1);
+        handles.push(handle);
+    }
+    for handle in handles {
+        handle.join().unwrap();
+    }
+    let x = closet_seed.lock().unwrap().1 as i32;
+    x
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -157,5 +223,11 @@ mod tests {
         let input = include_str!("assets/day_5_test_input_1.txt");
         let result = star_9(input);
         assert_eq!(result, 35);
+    }
+    #[test]
+    fn test_start_10() {
+        let input = include_str!("assets/day_5_test_input_1.txt");
+        let result = star_10(input);
+        assert_eq!(result, 46);
     }
 }

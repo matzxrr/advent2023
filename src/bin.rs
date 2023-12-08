@@ -51,6 +51,7 @@ fn get_star_answer(star: &str) {
         "7" => day_4_scratchcards::exec_star_7(),
         "8" => day_4_scratchcards::exec_star_8(),
         "9" => day_5_if_you_give_a_seed_a_fertilizer::exec_star_9(),
+        "10" => day_5_if_you_give_a_seed_a_fertilizer::exec_star_10(),
         _ => {
             eprintln!("Unknown star '{}'", star);
             return;
