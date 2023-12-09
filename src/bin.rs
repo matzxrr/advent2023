@@ -53,6 +53,7 @@ fn get_star_answer(star: &str) {
         "9" => day_5_if_you_give_a_seed_a_fertilizer::exec_star_9(),
         "10" => day_5_if_you_give_a_seed_a_fertilizer::exec_star_10(),
         "11" => day_6_wait_for_it::exec_star_11(),
+        "12" => day_6_wait_for_it::exec_star_12(),
         _ => {
             eprintln!("Unknown star '{}'", star);
             return;
