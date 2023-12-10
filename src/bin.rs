@@ -55,7 +55,7 @@ fn get_star_answer(star: &str) {
         "11" => day_6_wait_for_it::exec_star_11(),
         "12" => day_6_wait_for_it::exec_star_12(),
         "13" => day_7_camel_cards::exec_star_13(),
-        // "14" => day_7_camel_cards::exec_star_14(),
+        "14" => day_7_camel_cards::exec_star_14(),
         _ => {
             eprintln!("Unknown star '{}'", star);
             return;
