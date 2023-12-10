@@ -1,7 +1,7 @@
 use clap::{Arg, ArgAction, ArgGroup, Command};
 use solutions::{
     day_1_trebuchet, day_2_cube_conundrum, day_3_gear_ratios, day_4_scratchcards,
-    day_5_if_you_give_a_seed_a_fertilizer, day_6_wait_for_it,
+    day_5_if_you_give_a_seed_a_fertilizer, day_6_wait_for_it, day_7_camel_cards,
 };
 
 fn cli() -> Command {
@@ -54,6 +54,8 @@ fn get_star_answer(star: &str) {
         "10" => day_5_if_you_give_a_seed_a_fertilizer::exec_star_10(),
         "11" => day_6_wait_for_it::exec_star_11(),
         "12" => day_6_wait_for_it::exec_star_12(),
+        "13" => day_7_camel_cards::exec_star_13(),
+        // "14" => day_7_camel_cards::exec_star_14(),
         _ => {
             eprintln!("Unknown star '{}'", star);
             return;
