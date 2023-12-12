@@ -1,6 +1,6 @@
 use clap::{Arg, ArgAction, ArgGroup, Command};
 use solutions::{
-    day_1_trebuchet, day_2_cube_conundrum, day_3_gear_ratios, day_4_scratchcards,
+    day_10_pipe_maze, day_1_trebuchet, day_2_cube_conundrum, day_3_gear_ratios, day_4_scratchcards,
     day_5_if_you_give_a_seed_a_fertilizer, day_6_wait_for_it, day_7_camel_cards,
     day_8_haunted_wasteland, day_9_mirage_maintenance,
 };
@@ -47,6 +47,8 @@ fn get_star_answer(star: &str) {
         let answer = match star {
             "17" => day_9_mirage_maintenance::exec_star_17(),
             "18" => day_9_mirage_maintenance::exec_star_18(),
+            "19" => day_10_pipe_maze::exec_star_19(),
+            "20" => day_10_pipe_maze::exec_star_20(),
             _ => {
                 eprintln!("Unknown star '{}'", star);
                 return;
