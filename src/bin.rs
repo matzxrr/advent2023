@@ -2,7 +2,7 @@ use clap::{Arg, ArgAction, ArgGroup, Command};
 use solutions::{
     day_1_trebuchet, day_2_cube_conundrum, day_3_gear_ratios, day_4_scratchcards,
     day_5_if_you_give_a_seed_a_fertilizer, day_6_wait_for_it, day_7_camel_cards,
-    day_8_haunted_wasteland,
+    day_8_haunted_wasteland, day_9_mirage_maintenance,
 };
 
 fn cli() -> Command {
@@ -42,6 +42,19 @@ fn get_day_answers(day: &str) {
 }
 
 fn get_star_answer(star: &str) {
+    let answer_is_i64 = vec!["17", "18"];
+    if answer_is_i64.contains(&star) {
+        let answer = match star {
+            "17" => day_9_mirage_maintenance::exec_star_17(),
+            _ => {
+                eprintln!("Unknown star '{}'", star);
+                return;
+            }
+        };
+        println!("Answer for star '{}' => {}", star, answer);
+        return;
+    }
+
     let answer_is_u64 = vec!["16"];
     if answer_is_u64.contains(&star) {
         let answer = match star {
