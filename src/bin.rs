@@ -42,6 +42,19 @@ fn get_day_answers(day: &str) {
 }
 
 fn get_star_answer(star: &str) {
+    let answer_is_u64 = vec!["16"];
+    if answer_is_u64.contains(&star) {
+        let answer = match star {
+            "16" => day_8_haunted_wasteland::exec_star_16(),
+            _ => {
+                eprintln!("Unknown star '{}'", star);
+                return;
+            }
+        };
+        println!("Answer for star '{}' => {}", star, answer);
+        return;
+    }
+
     let answer = match star {
         "1" => day_1_trebuchet::exec_star_1(),
         "2" => day_1_trebuchet::exec_star_2(),
