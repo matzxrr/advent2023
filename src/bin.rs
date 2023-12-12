@@ -46,6 +46,7 @@ fn get_star_answer(star: &str) {
     if answer_is_i64.contains(&star) {
         let answer = match star {
             "17" => day_9_mirage_maintenance::exec_star_17(),
+            "18" => day_9_mirage_maintenance::exec_star_18(),
             _ => {
                 eprintln!("Unknown star '{}'", star);
                 return;

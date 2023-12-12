@@ -54,6 +54,41 @@ fn star_17(input: &str) -> i64 {
     total
 }
 
+pub fn exec_star_18() -> i64 {
+    star_18(INPUT)
+}
+
+fn star_18(input: &str) -> i64 {
+    let mut sensor = Sensor::from(input);
+    let mut total = 0;
+    for set in sensor.numbers.iter_mut() {
+        let mut row_index = 0;
+        loop {
+            let looking_row = &set[row_index];
+            let len = looking_row.len();
+            let mut new_row = vec![];
+            for counter in 0..len - 1 {
+                let a = counter;
+                let b = a + 1;
+                new_row.push(looking_row[b] - looking_row[a]);
+            }
+            if new_row.iter().all(|n| n == &0) {
+                set.push(new_row);
+                break;
+            }
+            set.push(new_row);
+            row_index += 1;
+        }
+        let mut new_value = 0;
+        let mut iter = set.iter();
+        while let Some(row) = iter.next_back() {
+            new_value = row[0] - new_value;
+        }
+        total += new_value;
+    }
+    total
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -63,5 +98,11 @@ mod tests {
         let input = include_str!("assets/day_9_test_input_1.txt");
         let result = star_17(input);
         assert_eq!(result, 114);
+    }
+    #[test]
+    fn test_star_18() {
+        let input = include_str!("assets/day_9_test_input_1.txt");
+        let result = star_18(input);
+        assert_eq!(result, 2);
     }
 }
