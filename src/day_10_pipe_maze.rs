@@ -108,7 +108,67 @@ impl PipeMaze {
 }
 
 pub fn exec_star_20() -> i64 {
-    unimplemented!()
+    star_20(INPUT)
+}
+
+fn star_20(input: &str) -> i64 {
+    let maze = PipeMaze::from(input);
+    let mut starting_direction = Direction::West;
+    let mut current_position = maze.starting_position;
+
+    let mut current_direction = starting_direction;
+    let mut points = vec![current_position];
+    loop {
+        let next = maze.next_piece(&current_position, &current_direction);
+        match next {
+            Ok((direction, pos)) => {
+                points.push(pos);
+                current_position = pos;
+                current_direction = direction;
+            }
+            Err((str, _pos)) => match str {
+                "Dead End" | "OOBX" | "OOBY" | "Empty" => match starting_direction {
+                    Direction::North => unreachable!(),
+                    Direction::East => {
+                        starting_direction = Direction::North;
+                        current_direction = starting_direction;
+                        current_position = maze.starting_position;
+                        points = vec![current_position];
+                    }
+                    Direction::South => {
+                        starting_direction = Direction::East;
+                        current_direction = starting_direction;
+                        current_position = maze.starting_position;
+                        points = vec![current_position];
+                    }
+                    Direction::West => {
+                        starting_direction = Direction::South;
+                        current_direction = starting_direction;
+                        current_position = maze.starting_position;
+                        points = vec![current_position];
+                    }
+                },
+                "FIN" => {
+                    break;
+                }
+                _ => unreachable!(),
+            },
+        }
+    }
+    points.push(maze.starting_position);
+    let area = shoelace(&points);
+    // Picks Theorem
+    (area + 1 - points.len() as i32 / 2) as i64
+}
+
+fn shoelace(points: &Vec<(i32, i32)>) -> i32 {
+    let mut area = 0;
+    for index in 0..points.len() - 1 {
+        let left = points[index];
+        let right = points[index + 1];
+        area += left.0 * right.1 - left.1 * right.0;
+    }
+    area.abs() / 2
 }
 
 pub fn exec_star_19() -> i64 {
@@ -177,5 +237,11 @@ mod tests {
         let input = include_str!("assets/day_10_test_input_2.txt");
         let result = star_19(input);
         assert_eq!(result, 8);
+    }
+    #[test]
+    fn test_star_20_1() {
+        let input = include_str!("assets/day_10_test_input_3.txt");
+        let result = star_20(input);
+        assert_eq!(result, 4);
     }
 }

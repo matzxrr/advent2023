@@ -48,7 +48,7 @@ fn get_star_answer(star: &str) {
             "17" => day_9_mirage_maintenance::exec_star_17(),
             "18" => day_9_mirage_maintenance::exec_star_18(),
             "19" => day_10_pipe_maze::exec_star_19(),
-            // "20" => day_10_pipe_maze::exec_star_20(),
+            "20" => day_10_pipe_maze::exec_star_20(),
             _ => {
                 eprintln!("Unknown star '{}'", star);
                 return;
