@@ -30,7 +30,7 @@ impl From<&str> for PipeMaze {
             let chars = line.chars();
             rows.push(chars.clone().collect());
             if let Some(pos) = chars.enumerate().find(|c| c.1 == 'S') {
-                starting_position = (index as i32, pos.0 as i32);
+                starting_position = (pos.0 as i32, index as i32);
             }
         }
         Self {
@@ -47,56 +47,53 @@ impl PipeMaze {
         let dir = PipeMaze::direction(direction);
         let result_x = starting_position.0 + dir.0;
         let result_y = starting_position.1 + dir.1;
-        let max_x = (self.rows.len() - 1) as i32;
-        let max_y = (self.rows[0].len() - 1) as i32;
+        let max_x = (self.rows[0].len() - 1) as i32;
+        let max_y = (self.rows.len() - 1) as i32;
         if result_x < 0 || result_x > max_x {
             return Err(("OOBX", (result_x, result_y)));
         } else if result_y < 0 || result_y > max_y {
             return Err(("OOBY", (result_x, result_y)));
         }
         let char_result = self.rows[result_y as usize][result_x as usize];
-        let next_direction = match char_result {
-            '|' => Some(*direction),
-            '-' => Some(*direction),
-            'L' => {
-                if direction == &Direction::South {
-                    Some(Direction::East)
+        let loc_result = (result_x, result_y);
+        match char_result {
+            '|' => {
+                if direction == &Direction::East || direction == &Direction::West {
+                    Err(("Dead End", loc_result))
                 } else {
-                    Some(Direction::North)
+                    Ok((*direction, loc_result))
                 }
             }
-            'J' => {
-                if direction == &Direction::South {
-                    Some(Direction::West)
+            '-' => {
+                if direction == &Direction::North || direction == &Direction::South {
+                    Err(("Dead End", loc_result))
                 } else {
-                    Some(Direction::North)
+                    Ok((*direction, loc_result))
                 }
             }
-            '7' => {
-                if direction == &Direction::East {
-                    Some(Direction::South)
-                } else {
-                    Some(Direction::West)
-                }
-            }
-            'F' => {
-                if direction == &Direction::West {
-                    Some(Direction::South)
-                } else {
-                    Some(Direction::East)
-                }
-            }
-            '.' => None,
-            'S' => None,
+            'L' => match *direction {
+                Direction::East | Direction::North => Err(("Dead End", loc_result)),
+                Direction::South => Ok((Direction::East, loc_result)),
+                Direction::West => Ok((Direction::North, loc_result)),
+            },
+            'J' => match *direction {
+                Direction::West | Direction::North => Err(("Dead End", loc_result)),
+                Direction::South => Ok((Direction::West, loc_result)),
+                Direction::East => Ok((Direction::North, loc_result)),
+            },
+            '7' => match *direction {
+                Direction::South | Direction::West => Err(("Dead End", loc_result)),
+                Direction::North => Ok((Direction::West, loc_result)),
+                Direction::East => Ok((Direction::South, loc_result)),
+            },
+            'F' => match *direction {
+                Direction::East | Direction::South => Err(("Dead End", loc_result)),
+                Direction::North => Ok((Direction::East, loc_result)),
+                Direction::West => Ok((Direction::South, loc_result)),
+            },
+            '.' => Err(("Empty", loc_result)),
+            'S' => Err(("FIN", loc_result)),
             _ => unreachable!(),
-        };
-
-        if let Some(next_dir) = next_direction {
-            Ok((next_dir, (result_x, result_y)))
-        } else if char_result == '.' {
-            Err(("No Pipe", (result_x, result_y)))
-        } else {
-            Err(("End", (result_x, result_y)))
         }
     }
 
@@ -120,29 +117,48 @@ pub fn exec_star_19() -> i64 {
 
 fn star_19(input: &str) -> i64 {
     let maze = PipeMaze::from(input);
-
+    let mut starting_direction = Direction::West;
     let mut current_position = maze.starting_position;
-    let mut current_direction = Direction::South;
+
+    let mut current_direction = starting_direction;
     let mut count = 1;
     loop {
         let next = maze.next_piece(&current_position, &current_direction);
         match next {
             Ok((direction, pos)) => {
-                println!(
-                    "headed {} from position ({}, {})",
-                    &direction, &pos.0, &pos.1
-                );
                 current_position = pos;
                 current_direction = direction;
                 count += 1;
             }
-            Err((str, pos)) => match str {
-                "No Pipe" => {}
-                _ => break,
+            Err((str, _pos)) => match str {
+                "Dead End" | "OOBX" | "OOBY" | "Empty" => match starting_direction {
+                    Direction::North => unreachable!(),
+                    Direction::East => {
+                        starting_direction = Direction::North;
+                        current_direction = starting_direction;
+                        current_position = maze.starting_position;
+                        count = 1;
+                    }
+                    Direction::South => {
+                        starting_direction = Direction::East;
+                        current_direction = starting_direction;
+                        current_position = maze.starting_position;
+                        count = 1;
+                    }
+                    Direction::West => {
+                        starting_direction = Direction::South;
+                        current_direction = starting_direction;
+                        current_position = maze.starting_position;
+                        count = 1;
+                    }
+                },
+                "FIN" => {
+                    break;
+                }
+                _ => unreachable!(),
             },
         }
     }
-
     count / 2
 }
 

@@ -42,13 +42,13 @@ fn get_day_answers(day: &str) {
 }
 
 fn get_star_answer(star: &str) {
-    let answer_is_i64 = vec!["17", "18"];
+    let answer_is_i64 = vec!["17", "18", "19", "20"];
     if answer_is_i64.contains(&star) {
         let answer = match star {
             "17" => day_9_mirage_maintenance::exec_star_17(),
             "18" => day_9_mirage_maintenance::exec_star_18(),
             "19" => day_10_pipe_maze::exec_star_19(),
-            "20" => day_10_pipe_maze::exec_star_20(),
+            // "20" => day_10_pipe_maze::exec_star_20(),
             _ => {
                 eprintln!("Unknown star '{}'", star);
                 return;
