@@ -1,8 +1,8 @@
 use clap::{Arg, ArgAction, ArgGroup, Command};
 use solutions::{
-    day_10_pipe_maze, day_1_trebuchet, day_2_cube_conundrum, day_3_gear_ratios, day_4_scratchcards,
-    day_5_if_you_give_a_seed_a_fertilizer, day_6_wait_for_it, day_7_camel_cards,
-    day_8_haunted_wasteland, day_9_mirage_maintenance,
+    day_10_pipe_maze, day_11_cosmic_expansion, day_1_trebuchet, day_2_cube_conundrum,
+    day_3_gear_ratios, day_4_scratchcards, day_5_if_you_give_a_seed_a_fertilizer,
+    day_6_wait_for_it, day_7_camel_cards, day_8_haunted_wasteland, day_9_mirage_maintenance,
 };
 
 fn cli() -> Command {
@@ -87,6 +87,7 @@ fn get_star_answer(star: &str) {
         "13" => day_7_camel_cards::exec_star_13(),
         "14" => day_7_camel_cards::exec_star_14(),
         "15" => day_8_haunted_wasteland::exec_star_15(),
+        "21" => day_11_cosmic_expansion::exec_star_21(),
         _ => {
             eprintln!("Unknown star '{}'", star);
             return;
