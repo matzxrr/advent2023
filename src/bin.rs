@@ -88,6 +88,7 @@ fn get_star_answer(star: &str) {
         "14" => day_7_camel_cards::exec_star_14(),
         "15" => day_8_haunted_wasteland::exec_star_15(),
         "21" => day_11_cosmic_expansion::exec_star_21(),
+        "22" => day_11_cosmic_expansion::exec_star_22(),
         _ => {
             eprintln!("Unknown star '{}'", star);
             return;

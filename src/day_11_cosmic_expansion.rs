@@ -97,6 +97,14 @@ fn star_21(input: &str) -> i32 {
     total
 }
 
+pub fn exec_star_22() -> i32 {
+    star_22(INPUT, 1000000)
+}
+
+fn star_22(input: &str, expand: i32) -> i32 {
+    0
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -106,5 +114,11 @@ mod tests {
         let input = include_str!("assets/day_11_test_input_1.txt");
         let result = star_21(input);
         assert_eq!(result, 374);
+    }
+
+    fn test_star_22() {
+        let input = include_str!("assets/day_11_test_input_1.txt");
+        let result = star_22(input, 10);
+        assert_eq!(result, 1030);
     }
 }
