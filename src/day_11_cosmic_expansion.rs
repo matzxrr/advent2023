@@ -64,6 +64,36 @@ impl Galaxy {
             self.map.insert(y.1 + y.0, vec!['.'; self.map[0].len()]);
         }
     }
+    fn get_expand_map(&self) -> (Vec<usize>, Vec<usize>) {
+        let mut x_map = vec![false; self.map[0].len()];
+        let mut y_map = vec![false; self.map.len()];
+
+        for (ref y_index, y_row) in self.map.iter().enumerate() {
+            let mut row_has = false;
+            for (ref x_index, x_item) in y_row.iter().enumerate() {
+                if x_item == &'#' {
+                    x_map[*x_index] = true;
+                    row_has = true;
+                }
+            }
+            if row_has {
+                y_map[*y_index] = true;
+            }
+        }
+        let x_voided: Vec<_> = x_map
+            .iter()
+            .enumerate()
+            .filter(|n| !*n.1)
+            .map(|l| l.0)
+            .collect();
+        let y_voided: Vec<_> = y_map
+            .iter()
+            .enumerate()
+            .filter(|n| !*n.1)
+            .map(|l| l.0)
+            .collect();
+        (x_voided, y_voided)
+    }
     fn get_locations(&self) -> Vec<(i32, i32)> {
         let mut locations = vec![];
         for (y, row) in self.map.iter().enumerate() {
@@ -102,6 +132,10 @@ pub fn exec_star_22() -> i32 {
 }
 
 fn star_22(input: &str, expand: i32) -> i32 {
+    let map = Galaxy::from(input);
+    let (xs, ys) = map.get_expand_map();
+    dbg!(&xs);
+    dbg!(&ys);
     0
 }
 
@@ -116,6 +150,7 @@ mod tests {
         assert_eq!(result, 374);
     }
 
+    #[test]
     fn test_star_22() {
         let input = include_str!("assets/day_11_test_input_1.txt");
         let result = star_22(input, 10);
