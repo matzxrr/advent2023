@@ -1,3 +1,5 @@
+use core::panic;
+
 const INPUT: &str = include_str!("assets/day_11_input_1.txt");
 
 #[derive(Debug)]
@@ -132,11 +134,44 @@ pub fn exec_star_22() -> i32 {
 }
 
 fn star_22(input: &str, expand: i32) -> i32 {
+    println!("expand count: {}", expand);
     let map = Galaxy::from(input);
     let (xs, ys) = map.get_expand_map();
-    dbg!(&xs);
-    dbg!(&ys);
-    0
+    let locations = map.get_locations();
+    println!("{:?}", &xs);
+    println!("{:?}", &ys);
+    let mut total = 0;
+    for i in 0..locations.len() {
+        for j in i + 1..locations.len() {
+            let a = locations[i];
+            let b = locations[j];
+            println!("a is at ({}, {})", a.0, a.1);
+            println!("b is at ({}, {})", b.0, b.1);
+            let mut count_x = xs.iter().fold(0, |mut acc, v_usize| {
+                let v = *v_usize as i32;
+                if a.0 <= v && v <= b.0 {
+                    acc += 1;
+                }
+                acc
+            });
+            let mut count_y = ys.iter().fold(0, |mut acc, v_usize| {
+                let v = *v_usize as i32;
+                if a.1 <= v && v <= b.1 {
+                    acc += 1;
+                }
+                acc
+            });
+            println!("count of expands between x points: {}", count_x);
+            println!("count of expands between y points: {}", count_y);
+            count_x *= (expand - 1);
+            count_y *= (expand - 1);
+            let distance = ((a.0 - b.0).abs() + count_x) + ((a.1 - b.1).abs() + count_y);
+            println!("expanded distance is {}", distance);
+            total += distance;
+            // panic!("end");
+        }
+    }
+    total
 }
 
 #[cfg(test)]
@@ -153,7 +188,7 @@ mod tests {
     #[test]
     fn test_star_22() {
         let input = include_str!("assets/day_11_test_input_1.txt");
-        let result = star_22(input, 10);
-        assert_eq!(result, 1030);
+        let result = star_22(input, 2);
+        assert_eq!(result, 374);
     }
 }
