@@ -42,13 +42,14 @@ fn get_day_answers(day: &str) {
 }
 
 fn get_star_answer(star: &str) {
-    let answer_is_i64 = vec!["17", "18", "19", "20"];
+    let answer_is_i64 = vec!["17", "18", "19", "20", "22"];
     if answer_is_i64.contains(&star) {
         let answer = match star {
             "17" => day_9_mirage_maintenance::exec_star_17(),
             "18" => day_9_mirage_maintenance::exec_star_18(),
             "19" => day_10_pipe_maze::exec_star_19(),
             "20" => day_10_pipe_maze::exec_star_20(),
+            "22" => day_11_cosmic_expansion::exec_star_22(),
             _ => {
                 eprintln!("Unknown star '{}'", star);
                 return;
@@ -88,7 +89,6 @@ fn get_star_answer(star: &str) {
         "14" => day_7_camel_cards::exec_star_14(),
         "15" => day_8_haunted_wasteland::exec_star_15(),
         "21" => day_11_cosmic_expansion::exec_star_21(),
-        "22" => day_11_cosmic_expansion::exec_star_22(),
         _ => {
             eprintln!("Unknown star '{}'", star);
             return;

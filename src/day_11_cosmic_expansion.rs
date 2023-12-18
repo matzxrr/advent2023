@@ -1,5 +1,3 @@
-use core::panic;
-
 const INPUT: &str = include_str!("assets/day_11_input_1.txt");
 
 #[derive(Debug)]
@@ -107,6 +105,41 @@ impl Galaxy {
         }
         locations
     }
+
+    fn compute_distance(&self, point1: &(i32, i32), point2: &(i32, i32), expand: &i32) -> i64 {
+        let (xs, ys) = self.get_expand_map();
+
+        let mut count_x = xs.iter().fold(0, |mut acc, v_usize| {
+            let v = *v_usize as i32;
+            let (low, hi) = if point1.0 < point2.0 {
+                (point1.0, point2.0)
+            } else {
+                (point2.0, point1.0)
+            };
+            if low < v && v < hi {
+                acc += 1;
+            }
+            acc
+        });
+        let mut count_y = ys.iter().fold(0, |mut acc, v_usize| {
+            let v = *v_usize as i32;
+            let (low, hi) = if point1.1 < point2.1 {
+                (point1.1, point2.1)
+            } else {
+                (point2.1, point1.1)
+            };
+            if low < v && v < hi {
+                acc += 1;
+            }
+            acc
+        });
+
+        count_x *= *expand as i64 - 1;
+        count_y *= *expand as i64 - 1;
+        let mut distance = ((point1.0 - point2.0).abs() + (point1.1 - point2.1).abs()) as i64;
+        distance += count_x + count_y;
+        distance
+    }
 }
 
 pub fn exec_star_21() -> i32 {
@@ -129,66 +162,72 @@ fn star_21(input: &str) -> i32 {
     total
 }
 
-pub fn exec_star_22() -> i32 {
+pub fn exec_star_22() -> i64 {
     star_22(INPUT, 1000000)
 }
 
-fn star_22(input: &str, expand: i32) -> i32 {
-    println!("expand count: {}", expand);
+fn star_22(input: &str, expand: i32) -> i64 {
     let map = Galaxy::from(input);
-    let (xs, ys) = map.get_expand_map();
     let locations = map.get_locations();
-    println!("{:?}", &xs);
-    println!("{:?}", &ys);
-    let mut total = 0;
+    let mut total: i64 = 0;
     for i in 0..locations.len() {
         for j in i + 1..locations.len() {
             let a = locations[i];
             let b = locations[j];
-            println!("a is at ({}, {})", a.0, a.1);
-            println!("b is at ({}, {})", b.0, b.1);
-            let mut count_x = xs.iter().fold(0, |mut acc, v_usize| {
-                let v = *v_usize as i32;
-                if a.0 <= v && v <= b.0 {
-                    acc += 1;
-                }
-                acc
-            });
-            let mut count_y = ys.iter().fold(0, |mut acc, v_usize| {
-                let v = *v_usize as i32;
-                if a.1 <= v && v <= b.1 {
-                    acc += 1;
-                }
-                acc
-            });
-            println!("count of expands between x points: {}", count_x);
-            println!("count of expands between y points: {}", count_y);
-            count_x *= (expand - 1);
-            count_y *= (expand - 1);
-            let distance = ((a.0 - b.0).abs() + count_x) + ((a.1 - b.1).abs() + count_y);
-            println!("expanded distance is {}", distance);
+            let distance = map.compute_distance(&a, &b, &expand);
             total += distance;
-            // panic!("end");
         }
     }
     total
 }
 
 #[cfg(test)]
-mod tests {
+mod day_11 {
     use super::*;
 
+    const INPUT: &str = include_str!("assets/day_11_test_input_1.txt");
     #[test]
     fn test_star_21() {
-        let input = include_str!("assets/day_11_test_input_1.txt");
-        let result = star_21(input);
+        let result = star_21(INPUT);
         assert_eq!(result, 374);
     }
 
     #[test]
-    fn test_star_22() {
-        let input = include_str!("assets/day_11_test_input_1.txt");
-        let result = star_22(input, 2);
+    fn test_star_22_2_expand() {
+        let result = star_22(INPUT, 2);
         assert_eq!(result, 374);
+    }
+    #[test]
+    fn test_star_22_10_expand() {
+        let result = star_22(INPUT, 10);
+        assert_eq!(result, 1030);
+    }
+    #[test]
+    fn test_star_22_100_expand() {
+        let result = star_22(INPUT, 100);
+        assert_eq!(result, 8410);
+    }
+}
+
+#[cfg(test)]
+mod test_expand {
+    use super::*;
+
+    const INPUT: &str = include_str!("assets/day_11_test_input_1.txt");
+    #[test]
+    fn part_1() {
+        let map = Galaxy::from(INPUT);
+        let point1 = (7, 1);
+        let point2 = (0, 2);
+        let distance = map.compute_distance(&point1, &point2, &2);
+        assert_eq!(distance, 10);
+    }
+    #[test]
+    fn part_2() {
+        let map = Galaxy::from(INPUT);
+        let point2 = (7, 1);
+        let point1 = (0, 2);
+        let distance = map.compute_distance(&point1, &point2, &2);
+        assert_eq!(distance, 10);
     }
 }
