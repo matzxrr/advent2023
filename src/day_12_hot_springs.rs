@@ -24,6 +24,14 @@ impl<'a> From<&'a str> for Springs<'a> {
     }
 }
 
+pub fn exec_star_24() -> i32 {
+    star_24(INPUT)
+}
+
+fn star_24(input: &str) -> i32 {
+    0
+}
+
 pub fn exec_star_23() -> i32 {
     star_23(INPUT)
 }

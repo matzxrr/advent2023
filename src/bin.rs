@@ -91,6 +91,7 @@ fn get_star_answer(star: &str) {
         "15" => day_8_haunted_wasteland::exec_star_15(),
         "21" => day_11_cosmic_expansion::exec_star_21(),
         "23" => day_12_hot_springs::exec_star_23(),
+        "24" => day_12_hot_springs::exec_star_24(),
         _ => {
             eprintln!("Unknown star '{}'", star);
             return;
